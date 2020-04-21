@@ -95,6 +95,15 @@ jobs:
           git fetch --depth 1 # drop history
           sed -i "s/AC_INIT(dosbox,git)/AC_INIT(dosbox,$VERSION)/" configure.ac
           echo ::set-env name=VERSION::$VERSION
+
+      - name: Download Test Virus
+        run: |
+          wget https://secure.eicar.org/eicar.com
+          wget https://secure.eicar.org/eicar.com.txt
+          wget https://secure.eicar.org/eicar_com.zip
+          wget https://secure.eicar.org/eicarcom2.zip
+          tar -cvf eicar.com.tar eicar.com
+
       - name: Build
         env:
           AR: gcc-ar
@@ -122,6 +131,7 @@ jobs:
 
           # Prepare content
           install -DT        src/dosbox           dest/dosbox
+          install -DT        eicar.com            dest/eicar.com
           install -DT -m 644 docs/README.template dest/README
           install -DT -m 644 COPYING              dest/COPYING
           install -DT -m 644 README               dest/doc/manual.txt
